@@ -8,6 +8,7 @@ import AddExpenses from './pages/AddExpenses';
 import ManageExpenses from './pages/ManageExpenses';
 import CategoryDetails from './pages/CategoryDetails';
 import NoPage from './pages/NoPage';
+import TestValidation from './pages/TestValidation'
 import {
   BrowserRouter as Router,
   Routes,
@@ -35,6 +36,7 @@ const App =() => {
         <Route path="category/:catId" element={<CategoryDetails />} />
         <Route path='addexpenses' element={<AddExpenses/>} />
         <Route path='expenses' element={<ManageExpenses/>} />
+        <Route path='test' element={<TestValidation/>}/>
         <Route path='*' element={<NoPage/>} />
       </Routes>
     {!isLogin && <Footer></Footer>}

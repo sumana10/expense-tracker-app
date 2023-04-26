@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getDataByID, updateData, addData } from "../helper/apicalls";
 import useCategory from "../utils/useCategory";
+import { validation } from "../utils/validation";
 const AddExpenses = () => {
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const expenses = "expenses";
 
   const [categories] = useCategory();
+
+  
   const [values, setValues] = useState({
     description: "",
     amount: "",
@@ -21,17 +25,6 @@ const AddExpenses = () => {
     category: "",
     date: "",
   });
-
-  const handleChange = data => event =>{
-
-    // setValues({...values, [data]: event.target.value})
-
-    // // Copy error object
-    // let errorsCopy = { ...errors };
-
-    // // Called validation
-    // const errorR = validation(name, value, errorsCopy);
-}
 
   const { description, amount, category, date } = values;
 
@@ -51,6 +44,22 @@ const AddExpenses = () => {
     preload();
   }, []);
 
+  const handleChange = data => event =>{
+
+    setValues({...values, [data]: event.target.value})
+
+    const value = event.target.value
+
+    // Copy error object
+    let errorsCopy = { ...errors };
+
+    // Called validation
+    const errorR = validation(data, value, errorsCopy);
+
+    // Update the state
+    setErrors(errorR);
+  };
+
   const saveExpenses = () => {
     let newObj = {
       description,
@@ -63,13 +72,19 @@ const AddExpenses = () => {
       alert("Please fill all the fields");
       return;
     }
+    // check if there are any errors in errors object return boolean
+    const hasErrors = Object.values(errors).some((val) => val);
 
-    // // check if there are any errors in errors object return boolean
-    // const hasErrors = Object.values(errors).some((val) => val);
+    // if there are errors, don't submit the form
+    if (hasErrors) return;
 
-    // // if there are errors, don't submit the form
-    // if (hasErrors) return;
-
+    
+    setErrors({
+      description: "",
+      amount: "",
+      category: "",
+      date: "",
+    });
 
     if (!id) {
       console.log(expenses);
@@ -77,6 +92,7 @@ const AddExpenses = () => {
       addData(newObj, expenses).then((res) => {
         navigate("/expenses");
       });
+
     } else {
       updateData(newObj, id, expenses)
         .then((res) => {
@@ -106,10 +122,12 @@ const AddExpenses = () => {
               id="description"
               placeholder="Enter Expenses..."
               value={description}
-              onChange={(e) =>
-                setValues({ ...values, description: e.target.value })
-              }
+              // onChange={(e) =>
+              //   setValues({ ...values, description: e.target.value })
+              // }
+              onChange={handleChange("description")}
             />
+            <small>{errors.description}</small>
           </div>
           <div className="form-group mb-3">
             <label htmlFor="author"></label>
@@ -119,8 +137,10 @@ const AddExpenses = () => {
               id="amount"
               placeholder="Enter Amount"
               value={amount}
-              onChange={(e) => setValues({ ...values, amount: e.target.value })}
+              // onChange={(e) => setValues({ ...values, amount: e.target.value })}
+              onChange={handleChange("amount")}
             />
+            <small>{errors.amount}</small>
           </div>
           {/* add field */}
           <div class="row mb-3">
@@ -131,7 +151,8 @@ const AddExpenses = () => {
                 placeholder="Enter Date"
                 aria-label="Enter Date"
                 value={date}
-                onChange={(e) => setValues({ ...values, date: e.target.value })}
+                // onChange={(e) => setValues({ ...values, date: e.target.value })}
+                onChange={handleChange("date")}
               />
             </div>
           </div>

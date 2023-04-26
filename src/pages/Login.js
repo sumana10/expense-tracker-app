@@ -2,18 +2,62 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
-
+import {validation} from "../utils/validation"
 import { checkValidateUser, setAuthentication } from "../utils/loginLogic";
 
 //import UserContext from "../../utils/UserContext";
 
 const Login = () => {
-  const [username, setUserName] = useState("sumana");
-  const [password, setPassword] = useState("1234");
+ // const [username, setUserName] = useState("sumana");
+//  const [password, setPassword] = useState("1234");
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+  })
+ // Conditional Rendering
+ const [errors, setErrors] = useState({
+  username: "",
+  password: "",
+}); // Separate error object
+
   const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
   const navigator = useNavigate();
 
+  const {username, password} = values;
+
+  const handleChange = data => event =>{
+
+    setValues({...values, [data]:event.target.value})
+    const value = event.target.value
+
+    // Copy error object
+    let errorsCopy = { ...errors };
+
+    // Called validation
+    const errorR = validation(data, value, errorsCopy);
+
+    // Update the state
+    setErrors(errorR);
+  }
+
   const login = async () => {
+
+    if (!username || !password ) {
+      alert("Please fill all the fields");
+      return;
+    }
+    // check if there are any errors in errors object return boolean
+    const hasErrors = Object.values(errors).some((val) => val);
+
+    // if there are errors, don't submit the form
+    if (hasErrors) return;
+
+    
+    setErrors({
+      username: "",
+      password: "",
+    });
+
     let userVal;
     userVal = await checkValidateUser(username, password).then(
       (res) => (userVal = res)
@@ -52,8 +96,10 @@ const Login = () => {
             id="username"
             placeholder="Enter username"
             value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            // onChange={(e) => setUserName(e.target.value)}
+            onChange = {handleChange("username")}
           />
+          <small>{errors.username}</small>
         </div>
         <div className="form-group mb-4">
           <label for="date"></label>
@@ -63,8 +109,10 @@ const Login = () => {
             id="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // onChange={(e) => setPassword(e.target.value)}
+            onChange = {handleChange("password")}
           />
+          <small>{errors.password}</small>
         </div>
 
         <button

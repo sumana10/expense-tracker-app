@@ -3,7 +3,7 @@
     {
       "id": 1,
       "user": "sumana",
-      "password": "1234",
+      "password": "123456",
       "role": "admin"
     },
     {
@@ -58,11 +58,18 @@
       "date": "2023-04-28"
     },
     {
-      "id": "7",
       "description": "Textbook purchase",
-      "category": "Education",
       "amount": 200,
-      "date": "2023-04-19"
+      "category": "Entertainments",
+      "date": "2023-04-19",
+      "id": "7"
+    },
+    {
+      "description": "Movie",
+      "amount": "500",
+      "category": "Entertainments",
+      "date": "2023-04-27",
+      "id": "KlETO7d"
     }
   ]
 }
