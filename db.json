@@ -1,0 +1,68 @@
+{
+  "login": [
+    {
+      "id": 1,
+      "user": "sumana",
+      "password": "1234",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "user": "sumananew",
+      "password": "123456",
+      "role": "member"
+    }
+  ],
+  "category": [
+    {
+      "name": "Utility Bill",
+      "id": 2
+    },
+    {
+      "name": "Entertainments",
+      "id": 3
+    },
+    {
+      "name": "Debt",
+      "id": 4
+    },
+    {
+      "name": "Education",
+      "id": 5
+    },
+    {
+      "name": "Investment",
+      "id": 6
+    }
+  ],
+  "expenses": [
+    {
+      "description": "Online Courses",
+      "amount": "5000",
+      "category": "Education",
+      "date": "2023-04-30",
+      "id": "zBfT4kr"
+    },
+    {
+      "description": "Electricity bill",
+      "amount": 100,
+      "category": "Utility Bill",
+      "date": "2023-04-20",
+      "id": "4"
+    },
+    {
+      "id": "5",
+      "description": "Concert tickets",
+      "category": "Entertainments",
+      "amount": 80,
+      "date": "2023-04-28"
+    },
+    {
+      "id": "7",
+      "description": "Textbook purchase",
+      "category": "Education",
+      "amount": 200,
+      "date": "2023-04-19"
+    }
+  ]
+}

@@ -1,24 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './layout/Header';
+import Footer from './layout/Footer';
+import Login from './pages/Login';
+import Category from './pages/Category';
+import AddExpenses from './pages/AddExpenses';
+import ManageExpenses from './pages/ManageExpenses';
+import CategoryDetails from './pages/CategoryDetails';
+import NoPage from './pages/NoPage';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 
-function App() {
+import { useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+const App =() => {
+
+    let { pathname } = useLocation();
+  const isLogin = pathname === '/'
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+<>
+
+     {!isLogin && <Header></Header>}
+   <ToastContainer/>
+     <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='category' element={<Category/>} />
+        <Route path="category/:catId" element={<CategoryDetails />} />
+        <Route path='addexpenses' element={<AddExpenses/>} />
+        <Route path='expenses' element={<ManageExpenses/>} />
+        <Route path='*' element={<NoPage/>} />
+      </Routes>
+    {!isLogin && <Footer></Footer>}
+</>
   );
 }
 
