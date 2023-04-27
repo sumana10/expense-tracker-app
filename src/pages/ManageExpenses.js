@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import edit from "../assets/edit.svg";
-import trash from "../assets/delete.svg";
-import star from "../assets/star.svg";
-import plus from "../assets/plus.svg";
-
-import {ToastContainer, toast } from "react-toastify";
+import { star, trash, plus, edit } from "../assets";
+import { ToastContainer, toast } from "react-toastify";
 import { getData, deleteData } from "../helper/apicalls";
 import { useNavigate } from "react-router-dom";
 
@@ -15,15 +11,16 @@ const ManageExpenses = () => {
   const expenses = "expenses";
 
   const preload = () => {
-    getData(expenses).then((res) =>{
-
+    getData(expenses).then((res) => {
       const expenses = res;
       console.log(res);
-      const total = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
+      const total = expenses.reduce(
+        (acc, curr) => acc + Number(curr.amount),
+        0
+      );
       setValues(res);
       setTotalExpenses(total);
-
-    } );
+    });
   };
 
   useEffect(() => {
@@ -40,11 +37,12 @@ const ManageExpenses = () => {
     const updateurl = `/addexpenses?id=${id}`;
     navigate(updateurl);
   };
+
   return (
-    <div class="mt-4 container">
-     <div className="my-4">
-          <h3 className="text-success">All Expenses</h3>
-          <p>Total Expenses: {totalExpenses}</p>
+    <div class="mt-4 container pb-5">
+      <div className="my-4">
+        <h3 className="text-success">All Expenses</h3>
+        <p>Total Expenses: {totalExpenses}</p>
       </div>
       <ul class="list-group">
         {values &&
@@ -58,7 +56,7 @@ const ManageExpenses = () => {
                 </div>
 
                 <div class="my-class col-md-8">
-                  <div class="text-success">
+                  <div class="text-success fw-bold">
                     Description: {row.description} Category: {row.category}{" "}
                     Amount: {row.amount}
                   </div>
@@ -83,6 +81,7 @@ const ManageExpenses = () => {
       </ul>
       <img
         className="myfabbottom icon"
+        title="Add Expenses"
         src={plus}
         alt="Icon Communities"
         onClick={() => navigate("/addexpenses")}

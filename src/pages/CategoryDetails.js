@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import star from "../assets/star.svg";
-import trash from "../assets/delete.svg";
+import { star, trash, plus } from "../assets";
 import { deleteData } from "../helper/apicalls";
+import { useNavigate } from "react-router-dom";
 
 const CategoryDetails = () => {
   const [value, setValue] = useState();
   const [values, setValues] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const params = useParams();
-
+  const navigate = useNavigate();
   const catId = params.catId;
 
   useEffect(() => {
@@ -38,10 +38,12 @@ const CategoryDetails = () => {
 
   const getExpenses = () => {
     axios.get(urlSpecific).then((res) => {
-
       const expenses = res.data;
       console.log(res.data);
-      const total = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
+      const total = expenses.reduce(
+        (acc, curr) => acc + Number(curr.amount),
+        0
+      );
       setValues(res.data);
       setTotalExpenses(total);
     });
@@ -57,11 +59,11 @@ const CategoryDetails = () => {
 
   return (
     <div class="mt-4 container">
-       <div className="my-4">
-              <h3 className="text-success">{value}</h3>
-              <p>Total Expenses: {totalExpenses}</p>
-        </div>
-        {values && values.length === 0 && <div>No expenses available</div>}
+      <div className="my-4">
+        <h3 className="text-success">{value}</h3>
+        <p>Total Expenses: {totalExpenses}</p>
+      </div>
+      {values && values.length === 0 && <div>No expenses available</div>}
       <ul class="list-group">
         {values &&
           values.map((row, index) => (
@@ -74,7 +76,7 @@ const CategoryDetails = () => {
                 </div>
 
                 <div class="my-class col-md-8">
-                  <div class="text-success">
+                  <div class="text-success fw-bold">
                     Description: {row.description} Category: {row.category}{" "}
                     Amount: {row.amount}
                   </div>
@@ -95,6 +97,13 @@ const CategoryDetails = () => {
             </li>
           ))}
       </ul>
+      <img
+        className="myfabbottom icon"
+        title="Add Expenses"
+        src={plus}
+        alt="Icon Communities"
+        onClick={() => navigate("/addexpenses")}
+      />
     </div>
   );
 };

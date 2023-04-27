@@ -41,7 +41,11 @@ const Header = (props) => {
       className="navbar navbar-expand-lg navbar-dark bg-success bg-gradient"
       style={styleX}
     >
-      <NavLink className="navbar-brand fw-bold" to="#" style={{ marginLeft: "50px" }}>
+      <NavLink
+        className="navbar-brand fw-bold"
+        to="#"
+        style={{ marginLeft: "50px" }}
+      >
         Expense Tracker
       </NavLink>
       <button
@@ -105,7 +109,10 @@ const Header = (props) => {
             </>
           )}
         </ul>
-          <span className="me-4 text-white fw-bold text-uppercase">Welcome ! {authUser?.user}</span>
+         {" "}
+        <span className="me-4 text-white fw-bold text-uppercase">
+          Welcome ! {authUser?.user}
+        </span>
         <button
           className="btn btn-outline-light me-4"
           onClick={() => onLogOut()}

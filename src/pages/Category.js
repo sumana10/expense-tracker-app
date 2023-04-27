@@ -1,13 +1,11 @@
-import edit from "../assets/edit.svg";
-import trash from "../assets/delete.svg";
-import star from "../assets/star.svg";
-import plus from "../assets/plus.svg";
-import React, { useState, useEffect } from "react";
+import { star, trash, plus, edit } from "../assets";
+import { useState, useEffect } from "react";
 import useCategory from "../utils/useCategory";
 import { addData, updateData, deleteData } from "../helper/apicalls";
-import {ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Category = () => {
+  
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useCategory();
   const [editCategory, setEditCategory] = useState(null);
@@ -17,6 +15,10 @@ const Category = () => {
   let categoryurl = "category";
 
   const saveCategory = () => {
+    if (!category) {
+      alert("Please fill all the fields");
+      return;
+    }
     let newObj = {
       name: category,
     };
@@ -46,7 +48,6 @@ const Category = () => {
     deleteData(id, categoryurl).then((data) => {
       const updatedCategories = categories.filter((value) => value.id !== id);
       setCategories(updatedCategories);
-
     });
   };
 
@@ -57,7 +58,7 @@ const Category = () => {
   };
 
   return (
-    <div className="d-flex flex-column mb-auto" style={{height: '80vh'}}>
+    <div className="d-flex flex-column mb-auto" style={{ height: "80vh" }}>
       <div class="mt-4 container">
         <div class="row">
           <div class="col-md-4">
@@ -96,7 +97,7 @@ const Category = () => {
                       </div>
                     </div>
                     <div class="my-class col-md-8">
-                      <div class="text-success">{cat.name}</div>
+                      <div class="text-success fw-bold">{cat.name}</div>
                     </div>
                     <div class="d-flex justify-content-center align-items-center col-md-1">
                       <img

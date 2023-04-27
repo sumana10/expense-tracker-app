@@ -4,14 +4,12 @@ import { getDataByID, updateData, addData } from "../helper/apicalls";
 import useCategory from "../utils/useCategory";
 import { validation } from "../utils/validation";
 const AddExpenses = () => {
-
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const expenses = "expenses";
 
   const [categories] = useCategory();
 
-  
   const [values, setValues] = useState({
     description: "",
     amount: "",
@@ -19,6 +17,7 @@ const AddExpenses = () => {
     date: "",
   });
 
+  // Error State
   const [errors, setErrors] = useState({
     description: "",
     amount: "",
@@ -44,11 +43,11 @@ const AddExpenses = () => {
     preload();
   }, []);
 
-  const handleChange = data => event =>{
+  //Onchange with higher order method
+  const handleChange = (data) => (event) => {
+    setValues({ ...values, [data]: event.target.value });
 
-    setValues({...values, [data]: event.target.value})
-
-    const value = event.target.value
+    const value = event.target.value;
 
     // Copy error object
     let errorsCopy = { ...errors };
@@ -72,13 +71,13 @@ const AddExpenses = () => {
       alert("Please fill all the fields");
       return;
     }
+
     // check if there are any errors in errors object return boolean
     const hasErrors = Object.values(errors).some((val) => val);
 
     // if there are errors, don't submit the form
     if (hasErrors) return;
 
-    
     setErrors({
       description: "",
       amount: "",
@@ -92,7 +91,6 @@ const AddExpenses = () => {
       addData(newObj, expenses).then((res) => {
         navigate("/expenses");
       });
-
     } else {
       updateData(newObj, id, expenses)
         .then((res) => {
@@ -110,9 +108,9 @@ const AddExpenses = () => {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
-        <div className="container" style={formStyle}>
+        <div className="container pb-5" style={formStyle}>
           <div className="my-4 text-center">
-          <h3 className="text-success">Add Expenses</h3>
+            <h3 className="text-success">Add Expenses</h3>
           </div>
           <div className="form-group mb-2">
             <label htmlFor="name"></label>
@@ -122,9 +120,6 @@ const AddExpenses = () => {
               id="description"
               placeholder="Enter Expenses..."
               value={description}
-              // onChange={(e) =>
-              //   setValues({ ...values, description: e.target.value })
-              // }
               onChange={handleChange("description")}
             />
             <small>{errors.description}</small>
@@ -137,7 +132,6 @@ const AddExpenses = () => {
               id="amount"
               placeholder="Enter Amount"
               value={amount}
-              // onChange={(e) => setValues({ ...values, amount: e.target.value })}
               onChange={handleChange("amount")}
             />
             <small>{errors.amount}</small>
@@ -151,7 +145,6 @@ const AddExpenses = () => {
                 placeholder="Enter Date"
                 aria-label="Enter Date"
                 value={date}
-                // onChange={(e) => setValues({ ...values, date: e.target.value })}
                 onChange={handleChange("date")}
               />
             </div>

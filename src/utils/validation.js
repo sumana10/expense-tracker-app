@@ -1,8 +1,7 @@
 export const validation = (name, value, errors) => {
   switch (name) {
     case "username":
-      errors.username =
-      /^[A-Za-z]\w*/.test(value) ? "" : "Invalid Username!";
+      errors.username = /^[A-Za-z]\w*/.test(value) ? "" : "Invalid Username!";
       break;
     case "email":
       errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)

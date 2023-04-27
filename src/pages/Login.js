@@ -1,34 +1,29 @@
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
-import {validation} from "../utils/validation"
+import { validation } from "../utils/validation";
 import { checkValidateUser, setAuthentication } from "../utils/loginLogic";
-
-//import UserContext from "../../utils/UserContext";
+import { getAuthientication } from "../utils/loginLogic";
 
 const Login = () => {
- // const [username, setUserName] = useState("sumana");
-//  const [password, setPassword] = useState("1234");
   const [values, setValues] = useState({
     username: "",
     password: "",
-  })
- // Conditional Rendering
- const [errors, setErrors] = useState({
-  username: "",
-  password: "",
-}); // Separate error object
+  });
+
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+  }); // Separate error object
 
   const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
   const navigator = useNavigate();
 
-  const {username, password} = values;
+  const { username, password } = values;
 
-  const handleChange = data => event =>{
-
-    setValues({...values, [data]:event.target.value})
-    const value = event.target.value
+  const handleChange = (data) => (event) => {
+    setValues({ ...values, [data]: event.target.value });
+    const value = event.target.value;
 
     // Copy error object
     let errorsCopy = { ...errors };
@@ -38,11 +33,10 @@ const Login = () => {
 
     // Update the state
     setErrors(errorR);
-  }
+  };
 
   const login = async () => {
-
-    if (!username || !password ) {
+    if (!username || !password) {
       alert("Please fill all the fields");
       return;
     }
@@ -52,7 +46,6 @@ const Login = () => {
     // if there are errors, don't submit the form
     if (hasErrors) return;
 
-    
     setErrors({
       username: "",
       password: "",
@@ -68,6 +61,7 @@ const Login = () => {
     if (userVal) {
       setAuthUser(userVal);
       setIsLoggedIn(true);
+      console.log("what is in authuser");
       console.log(authUser);
       setAuthentication();
       navigator("/category");
@@ -80,8 +74,9 @@ const Login = () => {
     maxWidth: "600px",
     margin: "80px auto",
     border: "1px solid rgba(0,0,0,.125)",
-    padding: "25px"
+    padding: "25px",
   };
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <div className="container" style={formStyle}>
@@ -96,8 +91,7 @@ const Login = () => {
             id="username"
             placeholder="Enter username"
             value={username}
-            // onChange={(e) => setUserName(e.target.value)}
-            onChange = {handleChange("username")}
+            onChange={handleChange("username")}
           />
           <small>{errors.username}</small>
         </div>
@@ -109,8 +103,7 @@ const Login = () => {
             id="password"
             placeholder="Enter your password"
             value={password}
-            // onChange={(e) => setPassword(e.target.value)}
-            onChange = {handleChange("password")}
+            onChange={handleChange("password")}
           />
           <small>{errors.password}</small>
         </div>
