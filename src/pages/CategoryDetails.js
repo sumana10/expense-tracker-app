@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { star, trash, plus } from "../assets";
-import { deleteData } from "../helper/apicalls";
+import { getDataByID, deleteData } from "../helper/apicalls";
 import { useNavigate } from "react-router-dom";
 
 const CategoryDetails = () => {
@@ -20,16 +20,18 @@ const CategoryDetails = () => {
 
   //category name
 
-  let url = `http://localhost:3000/category?id=${catId}`;
+ // let url = `http://localhost:3000/category?id=${catId}`;
 
-  console.log(url);
+//  console.log(url);
+
+  let categoryURL = "category";
 
   const categoryName = () => {
-    axios.get(url).then((res) => {
-      console.log(res.data[0].name);
-
-      setValue(res.data[0].name);
-    });
+    getDataByID(catId, categoryURL).then((res) =>{
+      if(res.name) setValue(res.name)
+      console.log(res.name);
+    }).
+    catch((err) => console.log(err))
   };
 
   let urlSpecific = `http://localhost:3000/expenses?category=${value}`;
