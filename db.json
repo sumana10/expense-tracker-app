@@ -45,7 +45,7 @@
     },
     {
       "description": "Electricity bill",
-      "amount": 100,
+      "amount": "1000",
       "category": "Utility Bill",
       "date": "2023-04-20",
       "id": "4"

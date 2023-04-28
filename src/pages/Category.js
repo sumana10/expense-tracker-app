@@ -39,7 +39,7 @@ const Category = () => {
       addData(newObj, categoryurl).then((res) => {
         setCategories([...categories, res.data]);
         setCategory("");
-        toast("Category Removed");
+        toast("Category Added");
       });
     }
   };
@@ -48,6 +48,7 @@ const Category = () => {
     deleteData(id, categoryurl).then((data) => {
       const updatedCategories = categories.filter((value) => value.id !== id);
       setCategories(updatedCategories);
+      toast("Category Deleted");
     });
   };
 

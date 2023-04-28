@@ -1,39 +1,45 @@
 import axios from "axios";
+import dotenv from 'dotenv';
+dotenv.config();
+const apiUrl = process.env.REACT_APP_API_URL;
 
-let URL = "http://localhost:3000/";
+
 
 export const getUser = (username, password) => {
-  //
-  const fetchURl = `${URL}login?user=${username}&password=${password}`;
+  const fetchURl = `${apiUrl}login?user=${username}&password=${password}`;
   return axios.get(fetchURl);
 };
 
-let result;
-
-export const getData = (argument) => {
+// Parameters serve as placeholders
+export const getData = (param) => {
   return axios
-    .get(URL + argument)
-    .then((res) => (result = res.data))
+    .get(apiUrl + param)
+    .then((response) => response.data)
+    .catch((error) => console.log(error));
+};
+
+export const addData = (data, param) => {
+  return axios
+    .post(apiUrl + param, data)
+    .then((response) => response)
+    .catch((error) => {
+      console.error(error);
+      throw new Error("Failed to add data");
+    });
+};
+
+export const deleteData = (id, param) => {
+  return axios.delete(apiUrl + param + "/" + id);
+};
+
+export const updateData = (data, id, param) => {
+  return axios.put(apiUrl + param + "/" + id, data);
+};
+
+export const getDataByID = (id, param) => {
+  const fetchURL = apiUrl + param + "/" + id;
+  return axios
+    .get(fetchURL)
+    .then((res) => res.data)
     .catch((err) => console.log(err));
 };
-
-export const addData = (data, argument) => {
-  return axios.post(URL + argument, data);
-};
-
-export const deleteData = (id, argument) => {
-  return axios.delete(URL + argument + "/" + id);
-};
-
-export const updateData = (data, id, argument) => {
-  return axios.put(URL + argument + "/" + id, data);
-};
-
-
-export const getDataByID = (id, argument) =>{
-
-  const fetchByIDURL = URL+argument + "/" + id;
-  return axios.get(fetchByIDURL).then((res) => (result = res.data)).catch(err => console.log(err));
-
-
-}
