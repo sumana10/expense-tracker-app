@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+//Routing state for the component
 import { useNavigate, useSearchParams } from "react-router-dom";
+//Apicalls
 import { getDataByID, updateData, addData } from "../helper/apicalls";
+//Custom hooks for the component
 import useCategory from "../utils/useCategory";
+//Validation funtion for the component
 import { validation } from "../utils/validation";
+
 const AddExpenses = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
+
   const expenses = "expenses";
 
   const [categories] = useCategory();
 
+  //State for the form fields
   const [values, setValues] = useState({
     description: "",
     amount: "",
@@ -17,7 +24,7 @@ const AddExpenses = () => {
     date: "",
   });
 
-  // Error State
+  //Error messages for the form fields
   const [errors, setErrors] = useState({
     description: "",
     amount: "",
@@ -25,18 +32,18 @@ const AddExpenses = () => {
     date: "",
   });
 
+  //Desctructures the state object
   const { description, amount, category, date } = values;
 
   console.log(values);
 
   const navigate = useNavigate();
 
-  const preload = () => {
-    getDataByID(id, expenses).then((res) => {
-      if (res) {
-        setValues(res);
-      }
-    });
+  const preload = async () => {
+    const response = await getDataByID(id, expenses);
+    if (response) {
+      setValues(response);
+    }
   };
 
   useEffect(() => {
@@ -59,20 +66,21 @@ const AddExpenses = () => {
     setErrors(errorR);
   };
 
-  const saveExpenses = () => {
+  const saveExpenses = async () => {
     let newObj = {
       description,
       amount,
       category,
       date,
     };
-
+    //check if the fields are blank then return
     if (!description || !amount || !category || !date) {
       alert("Please fill all the fields");
       return;
     }
 
     // check if there are any errors in errors object return boolean
+    // The provided code is using the Object.values() method to extract an array of values from the errors object, and then using the .some() method to determine whether any of the values in the array are truthy. The resulting boolean value indicates whether there are any errors in the errors object.
     const hasErrors = Object.values(errors).some((val) => val);
 
     // if there are errors, don't submit the form
@@ -85,19 +93,10 @@ const AddExpenses = () => {
       date: "",
     });
 
-    if (!id) {
-      console.log(expenses);
+    if (!id) await addData(newObj, expenses);
+    else await updateData(newObj, id, expenses);
 
-      addData(newObj, expenses).then((res) => {
-        navigate("/expenses");
-      });
-    } else {
-      updateData(newObj, id, expenses)
-        .then((res) => {
-          navigate("/expenses");
-        })
-        .catch((err) => console.log(err));
-    }
+    navigate("/expenses");
   };
 
   const formStyle = {
@@ -156,9 +155,10 @@ const AddExpenses = () => {
               className="form-control"
               id="category"
               value={category}
-              onChange={(e) =>
-                setValues({ ...values, category: e.target.value })
-              }
+              // onChange={(e) =>
+              //   setValues({ ...values, category: e.target.value })
+              // }
+              onChange={handleChange("category")}
             >
               <option value="">Choose a category</option>
               {categories.map((cat) => (
