@@ -51,18 +51,11 @@
       "id": "4"
     },
     {
-      "id": "5",
-      "description": "Concert tickets",
-      "category": "Entertainments",
-      "amount": 80,
-      "date": "2023-04-28"
-    },
-    {
-      "description": "Textbook purchase",
-      "amount": 200,
-      "category": "Entertainments",
-      "date": "2023-04-19",
-      "id": "7"
+      "description": "Online Courses",
+      "amount": "5000",
+      "category": "Debt",
+      "date": "2023-04-30",
+      "id": "WoP2q59"
     }
   ]
 }

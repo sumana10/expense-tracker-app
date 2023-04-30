@@ -27,11 +27,12 @@ const ManageExpenses = () => {
     preload();
   }, []);
 
-  const handleDelete = (id) => {
-    deleteData(id, expenses).then((data) => {
+  const handleDelete = async (id) => {
+    await deleteData(id, expenses)
+    //.then((data) => {
       preload();
       toast("Expense Removed");
-    });
+   // });
   };
   const handleUpdate = (id) => {
     const updateurl = `/addexpenses?id=${id}`;

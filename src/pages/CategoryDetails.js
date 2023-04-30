@@ -6,6 +6,7 @@ import { getDataByID, deleteData } from "../helper/apicalls";
 import { useNavigate } from "react-router-dom";
 
 const CategoryDetails = () => {
+  
   const [value, setValue] = useState();
   const [values, setValues] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState(0);

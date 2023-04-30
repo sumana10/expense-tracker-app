@@ -1,7 +1,12 @@
+//icons
 import { star, trash, plus, edit } from "../assets";
+//hooks
 import { useState, useEffect } from "react";
+//custom hooks
 import useCategory from "../utils/useCategory";
+//api calls
 import { addData, updateData, deleteData } from "../helper/apicalls";
+//toast messages
 import { ToastContainer, toast } from "react-toastify";
 
 const Category = () => {
@@ -10,11 +15,10 @@ const Category = () => {
   const [categories, setCategories] = useCategory();
   const [editCategory, setEditCategory] = useState(null);
 
-  // let url = "http://localhost:3000/category";
 
   let categoryurl = "category";
 
-  const saveCategory = () => {
+  const saveCategory = async() => {
     if (!category) {
       alert("Please fill all the fields");
       return;
@@ -24,8 +28,7 @@ const Category = () => {
     };
 
     if (editCategory) {
-      updateData(newObj, editCategory.id, categoryurl)
-        .then((res) => {
+          await updateData(newObj, editCategory.id, categoryurl)
           const updatedCategories = categories.map((cat) =>
             cat.id === editCategory.id ? { ...editCategory, ...newObj } : cat
           );
@@ -33,23 +36,20 @@ const Category = () => {
           setEditCategory(null);
           setCategory("");
           toast("Category Updated");
-        })
-        .catch((err) => console.log(err));
     } else {
-      addData(newObj, categoryurl).then((res) => {
-        setCategories([...categories, res.data]);
+        const response = await addData(newObj, categoryurl);
+        setCategories(prevCategories => [...prevCategories, response.data]);
         setCategory("");
         toast("Category Added");
-      });
     }
   };
 
-  const deleteCategory = (id) => {
-    deleteData(id, categoryurl).then((data) => {
+  const deleteCategory = async(id) => {
+      await deleteData(id, categoryurl)
       const updatedCategories = categories.filter((value) => value.id !== id);
       setCategories(updatedCategories);
       toast("Category Deleted");
-    });
+
   };
 
   const updateCategory = (id) => {
