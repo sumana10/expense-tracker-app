@@ -5,39 +5,37 @@ import { getData, deleteData } from "../helper/apicalls";
 import { useNavigate } from "react-router-dom";
 
 const ManageExpenses = () => {
+
   const navigate = useNavigate();
   const [values, setValues] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState(0);
   const expenses = "expenses";
 
-  const preload = () => {
+  useEffect(() => {
+    preload();
+  }, []);
+
+  const preload = () =>{
+
     getData(expenses).then((res) => {
       const expenses = res;
       console.log(res);
-      const total = expenses.reduce(
-        (acc, curr) => acc + Number(curr.amount),
-        0
-      );
+      const total = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
       setValues(res);
       setTotalExpenses(total);
     });
   };
 
-  useEffect(() => {
+  const handleDelete = async (id) =>{
+    await deleteData(id, expenses);
     preload();
-  }, []);
+    toast("Expense Removed");
+  }
 
-  const handleDelete = async (id) => {
-    await deleteData(id, expenses)
-    //.then((data) => {
-      preload();
-      toast("Expense Removed");
-   // });
-  };
-  const handleUpdate = (id) => {
+  const handleUpdate = (id) =>{
     const updateurl = `/addexpenses?id=${id}`;
     navigate(updateurl);
-  };
+  }
 
   return (
     <div class="mt-4 container pb-5">

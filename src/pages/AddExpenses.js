@@ -9,6 +9,7 @@ import useCategory from "../utils/useCategory";
 import { validation } from "../utils/validation";
 
 const AddExpenses = () => {
+
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
 
@@ -39,20 +40,23 @@ const AddExpenses = () => {
 
   const navigate = useNavigate();
 
-  const preload = async () => {
-    const response = await getDataByID(id, expenses);
-    if (response) {
-      setValues(response);
-    }
-  };
-
+  
   useEffect(() => {
     preload();
   }, []);
 
+  const preload = async () =>{
+    const response = await getDataByID(id, expenses);
+    if(response){
+      setValues(response)
+    }
+  }
+
+
   //Onchange with higher order method
-  const handleChange = (data) => (event) => {
-    setValues({ ...values, [data]: event.target.value });
+  const handleChange = (data) => (event) =>{
+    
+    setValues({...values, [data]: event.target.value });
 
     const value = event.target.value;
 
@@ -67,14 +71,15 @@ const AddExpenses = () => {
   };
 
   const saveExpenses = async () => {
+
     let newObj = {
       description,
       amount,
       category,
       date,
-    };
+    }
     //check if the fields are blank then return
-    if (!description || !amount || !category || !date) {
+    if(!description || !amount || !category || !date) {
       alert("Please fill all the fields");
       return;
     }
@@ -87,13 +92,14 @@ const AddExpenses = () => {
     if (hasErrors) return;
 
     setErrors({
+      ...errors,
       description: "",
       amount: "",
       category: "",
       date: "",
     });
 
-    if (!id) await addData(newObj, expenses);
+    if(!id) await addData(newObj, expenses);
     else await updateData(newObj, id, expenses);
 
     navigate("/expenses");
@@ -161,7 +167,7 @@ const AddExpenses = () => {
               onChange={handleChange("category")}
             >
               <option value="">Choose a category</option>
-              {categories.map((cat) => (
+              {categories.map((cat) =>(
                 <option value={cat.name} key={cat.id}>
                   {cat.name}
                 </option>
@@ -172,7 +178,7 @@ const AddExpenses = () => {
           <button
             className="btn bg-success bg-gradient text-white"
             style={{ display: "block", width: "100%" }}
-            onClick={() => saveExpenses()}
+            onClick={saveExpenses}
           >
             Enter Expense
           </button>

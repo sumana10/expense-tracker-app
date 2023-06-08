@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, useAsyncError, useNavigate, Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
 import { clearAuthientication, getAuthientication } from "../utils/loginLogic";
 import useCategory from "../utils/useCategory";
 
-const Header = (props) => {
+const Header = () => {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [categories] = useCategory();
@@ -14,17 +15,25 @@ const Header = (props) => {
   const menuClass = `dropdown-menu${isOpen ? " show" : ""}`;
 
   const [isAdmin, setIsAdmin] = useState();
-  const { authUser } = useAuth();
-  const navigate = useNavigate();
-  let res;
-  useEffect(() => {
-    const isloggin = getAuthientication();
-    if (!isloggin) navigate("/");
 
-    res = authUser?.role === "admin";
+  const {authUser} = useAuth();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+   authFunction()
+  },[]);
+
+  const authFunction = () =>{
+
+    const isLoggedIn = getAuthientication();
+    if (!isLoggedIn) navigate("/");
+
+    let res = authUser?.role === "admin";
     setIsAdmin(res);
     console.log(isAdmin + "admin");
-  });
+
+  }
 
   const onLogOut = () => {
     clearAuthientication();
@@ -61,7 +70,6 @@ const Header = (props) => {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav mx-auto">
-           {" "}
           {isAdmin && (
             <>
               <li className="nav-item">
@@ -109,13 +117,12 @@ const Header = (props) => {
             </>
           )}
         </ul>
-         {" "}
         <span className="me-4 text-white fw-bold text-uppercase">
           Welcome ! {authUser?.user}
         </span>
         <button
           className="btn btn-outline-light me-4"
-          onClick={() => onLogOut()}
+          onClick={onLogOut}
         >
           Log Out
         </button>

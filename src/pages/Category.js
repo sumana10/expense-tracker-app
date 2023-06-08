@@ -19,19 +19,21 @@ const Category = () => {
   let categoryurl = "category";
 
   const saveCategory = async() => {
-    if (!category) {
+
+    if(!category){
       alert("Please fill all the fields");
       return;
     }
+ 
     let newObj = {
       name: category,
-    };
+    }
 
     if (editCategory) {
           await updateData(newObj, editCategory.id, categoryurl)
           const updatedCategories = categories.map((cat) =>
             cat.id === editCategory.id ? { ...editCategory, ...newObj } : cat
-          );
+          )
           setCategories(updatedCategories);
           setEditCategory(null);
           setCategory("");
@@ -44,19 +46,24 @@ const Category = () => {
     }
   };
 
-  const deleteCategory = async(id) => {
-      await deleteData(id, categoryurl)
+  
+  const deleteCategory = async(id) =>{
+
+      await deleteData(id, categoryurl);
       const updatedCategories = categories.filter((value) => value.id !== id);
       setCategories(updatedCategories);
       toast("Category Deleted");
 
   };
 
-  const updateCategory = (id) => {
-    const editCat = categories.find((cat) => cat.id === id);
+
+  const updateCategory = (id) =>{
+    const editCat = categories.find((cat) => cat.id === id)
     setEditCategory(editCat);
     setCategory(editCat.name);
-  };
+  }
+
+
 
   return (
     <div className="d-flex flex-column mb-auto" style={{ height: "80vh" }}>
@@ -80,7 +87,7 @@ const Category = () => {
                 className="myfab icon"
                 src={plus}
                 alt="Icon Communities"
-                onClick={() => saveCategory()}
+                onClick={saveCategory}
               />
             </div>
             {/* <button id="mybtn" className="btn btn-primary" onClick={() => saveCategory()}>

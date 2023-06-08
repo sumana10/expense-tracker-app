@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
@@ -19,12 +18,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App =() => {
 
-    let { pathname } = useLocation();
+  let { pathname } = useLocation();
   const isLogin = pathname === '/'
   return (
 <>
 
-     {!isLogin && <Header></Header>}
+     {!isLogin && <Header/>}
    <ToastContainer/>
      <Routes>
         <Route path='/' element={<Login />} />
@@ -34,7 +33,7 @@ const App =() => {
         <Route path='expenses' element={<ManageExpenses/>} />
         <Route path='*' element={<NoPage/>} />
       </Routes>
-    {!isLogin && <Footer></Footer>}
+    {!isLogin && <Footer/>}
 </>
   );
 }

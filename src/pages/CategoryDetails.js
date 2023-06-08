@@ -6,7 +6,7 @@ import { getDataByID, deleteData } from "../helper/apicalls";
 import { useNavigate } from "react-router-dom";
 
 const CategoryDetails = () => {
-  
+
   const [value, setValue] = useState();
   const [values, setValues] = useState([]);
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -14,26 +14,20 @@ const CategoryDetails = () => {
   const navigate = useNavigate();
   const catId = params.catId;
 
-  useEffect(() => {
-    categoryName();
-    getExpenses();
-  }, [catId, value]);
 
-  //category name
-
- // let url = `http://localhost:3000/category?id=${catId}`;
-
-//  console.log(url);
+ useEffect(() =>{
+  categoryName();
+  getExpenses();
+ },[catId, value])
 
   let categoryURL = "category";
 
-  const categoryName = () => {
+  const categoryName = () =>{
     getDataByID(catId, categoryURL).then((res) =>{
       if(res.name) setValue(res.name)
       console.log(res.name);
-    }).
-    catch((err) => console.log(err))
-  };
+    }).catch((err) => console.log(err))
+  }
 
   let urlSpecific = `http://localhost:3000/expenses?category=${value}`;
 
@@ -43,10 +37,7 @@ const CategoryDetails = () => {
     axios.get(urlSpecific).then((res) => {
       const expenses = res.data;
       console.log(res.data);
-      const total = expenses.reduce(
-        (acc, curr) => acc + Number(curr.amount),
-        0
-      );
+      const total = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
       setValues(res.data);
       setTotalExpenses(total);
     });
@@ -54,11 +45,11 @@ const CategoryDetails = () => {
 
   let expenses = "expenses";
 
-  const handleDelete = (id) => {
-    deleteData(id, expenses).then((data) => {
+  const handleDelete = (id) =>{
+    deleteData(id, expenses).then((data) =>{
       getExpenses();
-    });
-  };
+    })
+  }
 
   return (
     <div class="mt-4 container">

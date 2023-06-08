@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
 import { validation } from "../utils/validation";
 import { checkValidateUser, setAuthentication } from "../utils/loginLogic";
-import { getAuthientication } from "../utils/loginLogic";
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -17,7 +16,7 @@ const Login = () => {
   }); // Separate error object
 
   const { authUser, setAuthUser, setIsLoggedIn } = useAuth();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const { username, password } = values;
 
@@ -47,24 +46,21 @@ const Login = () => {
     if (hasErrors) return;
 
     setErrors({
+      ...errors,
       username: "",
       password: "",
     });
 
-    let userVal;
-    userVal = await checkValidateUser(username, password).then(
-      (res) => (userVal = res)
-    );
+
+  let userVal = await checkValidateUser(username, password).then((res) => res);
 
     console.log(userVal);
 
-    if (userVal) {
+    if(userVal){
       setAuthUser(userVal);
       setIsLoggedIn(true);
-      console.log("what is in authuser");
-      console.log(authUser);
       setAuthentication();
-      navigator("/category");
+      navigate("/category");
     } else {
       alert("Authentication Failed");
     }
@@ -112,7 +108,7 @@ const Login = () => {
           className="btn btn-success text-white btn-block"
           style={{ display: "block", width: "100%" }}
           id="mybtn"
-          onClick={() => login()}
+          onClick={login}
         >
           Signin
         </button>

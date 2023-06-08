@@ -3,9 +3,9 @@ import trash from "./delete.svg";
 import star from "./star.svg";
 import plus from "./plus.svg";
 
-export {
+  export{
     edit,
     trash,
     star,
     plus
-  };
+  }
